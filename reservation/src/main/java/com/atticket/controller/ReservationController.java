@@ -25,4 +25,5 @@ public class ReservationController {
 	public SampleDto postReservation() {
 		return SampleDto.builder().content("hi").build();
 	}
+
 }
