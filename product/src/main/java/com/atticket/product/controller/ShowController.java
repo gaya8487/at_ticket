@@ -13,14 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.atticket.common.response.BaseResponse;
-import com.atticket.product.domain.ReservedSeat;
 import com.atticket.product.domain.ShowSeat;
 import com.atticket.product.dto.request.RegisterShowReqDto;
 import com.atticket.product.dto.response.GetRemainSeatsCntResDto;
 import com.atticket.product.dto.response.GetRemainSeatsResDto;
 import com.atticket.product.repository.GradeRepository;
-import com.atticket.product.repository.ReservedSeatRepository;
 import com.atticket.product.repository.ShowSeatRepository;
+import com.atticket.product.service.ShowService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +33,7 @@ public class ShowController {
 
 	private final GradeRepository gradeRepository;
 	private final ShowSeatRepository showSeatRepository;
-	private final ReservedSeatRepository reservedSeatRepository;
+	private final ShowService showService;
 
 	//공연의 남은 좌석 조회
 	@GetMapping("/{showId}/seats")
@@ -85,12 +84,17 @@ public class ShowController {
 		List<ShowSeat> showSeats = showSeatRepository.findShowSeatByShowId(showId);
 
 		//showId로 예매 좌석 리스트 조회
-		List<ReservedSeat> reservedSeats = reservedSeatRepository.findReservedSeatByShowId(showId);
+		List<Long> reservationSeats = showService.getReservationSeats(showId);
+
+		if (reservationSeats == null || reservationSeats.size() == 0) {
+			return ok(
+				GetRemainSeatsCntResDto.builder().build()
+			);
+		}
 
 		List<GetRemainSeatsCntResDto.RemainSeat> remainSeats = new ArrayList<>();
 
 		//showSeats 등급별 SeatList 카운트
-
 		//등급별 남은 좌석 :showSeats  등급별 좌석  -  예매 좌석
 		for (ShowSeat showSeat : showSeats) {
 			List<Long> seats = showSeatRepository.convertStringToList(showSeat.getSeatList());
@@ -99,11 +103,11 @@ public class ShowController {
 			log.debug("showId : " + showId);
 			log.debug("seats : " + showSeat.getSeatList());
 
-			for (ReservedSeat reservedSeat : reservedSeats) {
+			for (Long seatId : reservationSeats) {
 				for (Long seat : seats) {
 
-					log.debug("reserved seats : " + reservedSeat.getSeatId());
-					if (seat.equals(reservedSeat.getSeatId())) {
+					log.debug("reserved seats : " + seatId);
+					if (seat.equals(seatId)) {
 						remainSeatCnt = remainSeatCnt - 1;
 					}
 				}

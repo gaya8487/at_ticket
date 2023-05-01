@@ -18,11 +18,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.atticket.product.domain.Grade;
-import com.atticket.product.domain.ReservedSeat;
 import com.atticket.product.domain.ShowSeat;
 import com.atticket.product.repository.GradeRepository;
-import com.atticket.product.repository.ReservedSeatRepository;
 import com.atticket.product.repository.ShowSeatRepository;
+import com.atticket.product.service.ShowService;
 
 @WebMvcTest(ShowController.class)
 public class ShowControllerTest {
@@ -37,7 +36,7 @@ public class ShowControllerTest {
 	GradeRepository gradeRepository;
 
 	@MockBean
-	ReservedSeatRepository reservedSeatRepository;
+	ShowService showService;
 
 	@Test
 	@DisplayName("공연의 남은 좌석수 조회 테스트")
@@ -84,23 +83,9 @@ public class ShowControllerTest {
 		);
 
 		//예약 좌석 정보
-		given(reservedSeatRepository.findReservedSeatByShowId(1L)).willReturn(
+		given(showService.getReservationSeats(1L)).willReturn(
 			Arrays.asList(
-				ReservedSeat.builder()
-					.id(1L)
-					.showId(1L)
-					.seatId(1L)
-					.build(),
-				ReservedSeat.builder()
-					.id(2L)
-					.showId(1L)
-					.seatId(2L)
-					.build(),
-				ReservedSeat.builder()
-					.id(3L)
-					.showId(1L)
-					.seatId(8L)
-					.build()
+				1L, 2L, 8L
 			)
 		);
 
