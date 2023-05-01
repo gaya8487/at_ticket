@@ -85,7 +85,7 @@ public class ShowController {
 		List<ShowSeat> showSeats = showSeatRepository.findShowSeatByShowId(showId);
 
 		//showId로 예매 좌석 리스트 조회
-		List<ReservedSeat> reservedSeats = reservedSeatRepository.findShowSeatByShowId(showId);
+		List<ReservedSeat> reservedSeats = reservedSeatRepository.findReservedSeatByShowId(showId);
 
 		List<GetRemainSeatsCntResDto.RemainSeat> remainSeats = new ArrayList<>();
 

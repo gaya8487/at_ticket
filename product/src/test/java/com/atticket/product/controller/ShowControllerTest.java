@@ -84,7 +84,7 @@ public class ShowControllerTest {
 		);
 
 		//예약 좌석 정보
-		given(reservedSeatRepository.findShowSeatByShowId(1L)).willReturn(
+		given(reservedSeatRepository.findReservedSeatByShowId(1L)).willReturn(
 			Arrays.asList(
 				ReservedSeat.builder()
 					.id(1L)

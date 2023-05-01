@@ -1,4 +1,4 @@
-package com.atticket.product.repository;
+package com.atticket.reservation.repository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
-import com.atticket.product.domain.ReservedSeat;
+import com.atticket.reservation.domain.ReservedSeat;
 
 @Repository
 public class ReservedSeatRepository {
@@ -65,5 +65,4 @@ public class ReservedSeatRepository {
 	public List<ReservedSeat> findAll() {
 		return reservedSeatTestDatas;
 	}
-
 }
