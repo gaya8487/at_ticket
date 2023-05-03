@@ -1,5 +1,7 @@
 package com.atticket.product.dto.request;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import lombok.Getter;
@@ -11,38 +13,38 @@ public class RegisterShowReqDto {
 
 	//상품 Id
 	private Long productId;
+	//공연 리스트
+	private List<Show> shows;
 
-	//공연 시간/좌석 정보 리스트
-	private List<ShowInfo> shows;
-
-	//공연 시간/좌석 정보
 	@Getter
 	@ToString
-	public static class ShowInfo {
+	public static class Show {
 
-		//날짜
-		private String date;
+		//공연 회차
+		private int session;
 
-		//시간
-		private String time;
+		//공연 시간
+		private LocalTime time;
 
-		//공연 홀 id
-		private String hallId;
+		//공연 날짜
+		private LocalDate date;
+
+		//공연 홀
+		private Long hallId;
 
 		//좌석 정보 (좌석ID, 등급)
-		private List<SeatInfo> seats;
-
+		private List<Seat> seats;
 	}
 
 	@Getter
 	@ToString
-	public static class SeatInfo {
+	public static class Seat {
 
-		//좌석 Id
-		private String id;
+		//좌석 등급 id
+		private Long gradeId;
 
-		//좌석 등급
-		private String grade;
+		//좌석 Id 리스트
+		private List<Long> seatIds;
 
 	}
 }

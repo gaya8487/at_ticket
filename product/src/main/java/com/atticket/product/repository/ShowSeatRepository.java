@@ -18,7 +18,7 @@ public class ShowSeatRepository {
 	private List<Long> testSeatListData3 = Arrays.asList(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L);
 	private List<Long> testSeatListData4 = Arrays.asList(9L, 10L, 11L);
 
-	private List<ShowSeat> ShowSeatTestDatas = new ArrayList<>(Arrays.asList(
+	private List<ShowSeat> showSeatTestDatas = new ArrayList<>(Arrays.asList(
 		ShowSeat.builder()
 			.id(1L)
 			.showId(1L)
@@ -49,8 +49,14 @@ public class ShowSeatRepository {
 			.build()
 	));
 
+	public Long save(ShowSeat showSeat) {
+		showSeat.setId((long)showSeatTestDatas.size() + 1);
+		showSeatTestDatas.add(showSeat);
+		return (long)showSeatTestDatas.size() + 1;
+	}
+
 	public Optional<ShowSeat> findById(String id) {
-		return ShowSeatTestDatas.stream()
+		return showSeatTestDatas.stream()
 			.filter(
 				showSeat -> showSeat.getId().equals(id)
 			).findAny();
@@ -58,7 +64,7 @@ public class ShowSeatRepository {
 
 	public List<ShowSeat> findShowSeatByProductId(Long productId) {
 
-		return ShowSeatTestDatas.stream()
+		return showSeatTestDatas.stream()
 			.filter(
 				showSeat -> showSeat.getProductId().equals(productId)
 			).collect(Collectors.toList());
@@ -66,14 +72,14 @@ public class ShowSeatRepository {
 
 	public List<ShowSeat> findShowSeatByShowId(Long showId) {
 
-		return ShowSeatTestDatas.stream()
+		return showSeatTestDatas.stream()
 			.filter(
 				showSeat -> showSeat.getShowId().equals(showId)
 			).collect(Collectors.toList());
 	}
 
 	public List<ShowSeat> findAll() {
-		return ShowSeatTestDatas;
+		return showSeatTestDatas;
 	}
 
 	/**
@@ -81,7 +87,7 @@ public class ShowSeatRepository {
 	 * @param stringSeatList
 	 * @return
 	 */
-	public List<Long> convertStringToList(String stringSeatList) {
+	public static List<Long> convertStringToList(String stringSeatList) {
 
 		List<Long> seatList = new ArrayList<>();
 		if (!stringSeatList.isBlank()) {
@@ -99,7 +105,7 @@ public class ShowSeatRepository {
 	 * @param seatList
 	 * @return
 	 */
-	public String convertListToString(List<Long> seatList) {
+	public static String convertListToString(List<Long> seatList) {
 
 		List<String> seatStringList = seatList.stream().map(s -> Long.toString(s)).collect(Collectors.toList());
 		return String.join(",", seatStringList);

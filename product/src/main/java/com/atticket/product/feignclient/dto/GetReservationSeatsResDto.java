@@ -1,4 +1,4 @@
-package com.atticket.product.feignClient.dto;
+package com.atticket.product.feignclient.dto;
 
 import java.util.List;
 

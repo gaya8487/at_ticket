@@ -17,4 +17,8 @@ public class ShowSeat {
 	private Long gradeId;
 	private Long productId;
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 }

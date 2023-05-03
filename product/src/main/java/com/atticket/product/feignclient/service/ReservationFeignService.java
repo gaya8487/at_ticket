@@ -1,11 +1,11 @@
-package com.atticket.product.feignClient.service;
+package com.atticket.product.feignclient.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.atticket.product.feignClient.client.ReservationFeignClient;
-import com.atticket.product.feignClient.dto.GetReservationSeatsResDto;
+import com.atticket.product.feignclient.client.ReservationFeignClient;
+import com.atticket.product.feignclient.dto.GetReservationSeatsResDto;
 
 import lombok.RequiredArgsConstructor;
 

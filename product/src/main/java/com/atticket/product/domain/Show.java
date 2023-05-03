@@ -21,4 +21,10 @@ public class Show {
 
 	private Long productId;
 
+	private Long hallId;
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 }
