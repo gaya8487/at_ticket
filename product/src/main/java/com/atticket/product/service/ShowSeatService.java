@@ -68,6 +68,25 @@ public class ShowSeatService {
 	}
 
 	/**
+	 *
+	 * @param showSeat
+	 * @return
+	 */
+	public Long registerShowSeat(Long showId, Long gradeId, Long productId, String seatList) {
+
+		//Todo 동일한 show Id, session Id가 이미 등록되어 있나 체크
+
+		ShowSeat showSeat = ShowSeat.builder()
+			.showId(showId)
+			.gradeId(gradeId)
+			.productId(productId)
+			.seatList(seatList)
+			.build();
+		
+		return showSeatRepository.save(showSeat);
+	}
+
+	/**
 	 * seatList을 String -> List<Long> 반환
 	 * @param stringSeatList
 	 * @return
