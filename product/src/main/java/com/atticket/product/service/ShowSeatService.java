@@ -68,13 +68,14 @@ public class ShowSeatService {
 	}
 
 	/**
-	 *
-	 * @param showSeat
+	 * 공연 좌석 매핑 정보 등록
+	 * @param productId
+	 * @param showId
+	 * @param gradeId
+	 * @param seatList
 	 * @return
 	 */
-	public Long registerShowSeat(Long showId, Long gradeId, Long productId, String seatList) {
-
-		//Todo 동일한 show Id, session Id가 이미 등록되어 있나 체크
+	public Long registerShowSeat(Long productId, Long showId, Long gradeId, String seatList) {
 
 		ShowSeat showSeat = ShowSeat.builder()
 			.showId(showId)
@@ -82,7 +83,7 @@ public class ShowSeatService {
 			.productId(productId)
 			.seatList(seatList)
 			.build();
-		
+
 		return showSeatRepository.save(showSeat);
 	}
 

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -60,18 +61,18 @@ public class ShowService {
 	/**
 	 * 공연 등록
 	 * @param productId
-	 * @param RegisterShowDto
+	 * @param registerShowDto
 	 * @return 등록된 showId
 	 */
-	public Long registerShow(long productId, RegisterShowServiceDto RegisterShowDto) {
+	public Long registerShow(long productId, RegisterShowServiceDto registerShowDto) {
 
 		LocalDate paredDate;
 		LocalTime paredtime;
-		Long registedShowId = 0L;
+		Long registedShowId = null;
 
 		try {
-			paredDate = LocalDate.parse(RegisterShowDto.getDate(), DateTimeFormatter.BASIC_ISO_DATE);
-			paredtime = LocalTime.parse(RegisterShowDto.getTime(), DateTimeFormatter.BASIC_ISO_DATE);
+			paredDate = LocalDate.parse(registerShowDto.getDate(), DateTimeFormatter.BASIC_ISO_DATE);
+			paredtime = LocalTime.parse(registerShowDto.getTime(), DateTimeFormatter.BASIC_ISO_DATE);
 		} catch (Exception e) {
 			throw new BaseException(BaseStatus.UNEXPECTED_ERROR);
 		}
@@ -80,16 +81,27 @@ public class ShowService {
 			.productId(productId)
 			.date(paredDate)
 			.time(paredtime)
-			.session(Integer.parseInt(RegisterShowDto.getSession()))
-			.hallId(Long.parseLong(RegisterShowDto.getHallId()))
+			.session(Integer.parseInt(registerShowDto.getSession()))
+			.hallId(Long.parseLong(registerShowDto.getHallId()))
 			.build();
 
+		//공연 저장
 		registedShowId = showRepository.save(show, productId);
 
-		//등록된 공연의 좌석-등급 매핑 저장
-		//showId에 해당하는 sessionId가 이미 저장되어있으면 덮어쓰기
+		if (Objects.isNull(registedShowId)) {
+			throw new BaseException(BaseStatus.UNEXPECTED_ERROR);
+		} else {
+			//등록된 공연의 좌석-등급 매핑 저장
 
-		showSeatService.registerShowSeat();
+			registerShowDto.getSeats().stream().filter(seatInfo -> seatInfo.equals(grade)).collect(Collectors.toList());
+
+			showSeatService.registerShowSeat(productId, registedShowId, Long.valueOf(seatInfo.getGrade()), seatList);
+
+			// List<Long> registedShowIds = registerShowDto.getSeats().stream()
+			// 	.map(seatInfo -> showSeatService.registerShowSeat(productId,
+			// 		finalRegistedShowId, Long.valueOf(seatInfo.getGrade()), seatList)
+			// 	).collect(Collectors.toList());
+		}
 
 		return registedShowId;
 	}
