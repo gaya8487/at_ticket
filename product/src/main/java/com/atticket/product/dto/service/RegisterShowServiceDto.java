@@ -31,11 +31,12 @@ public class RegisterShowServiceDto {
 	@ToString
 	public static class SeatInfo {
 
-		//좌석 Id
-		private String id;
-
 		//좌석 등급
 		private String grade;
+
+		//좌석 Id
+		private List<String> ids;
+
 	}
 
 }

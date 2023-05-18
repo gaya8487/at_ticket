@@ -32,7 +32,7 @@ public class RegisterShowReqDto {
 		//공연 홀 id
 		private String hallId;
 
-		//좌석 정보 (좌석ID, 등급)
+		//좌석 등급 매핑 정보 (좌석ID, 등급)
 		private List<SeatInfo> seats;
 
 	}
@@ -41,10 +41,11 @@ public class RegisterShowReqDto {
 	@ToString
 	public static class SeatInfo {
 
-		//좌석 Id
-		private String id;
-
 		//좌석 등급
 		private String grade;
+
+		//좌석 Id
+		private List<String> ids;
+
 	}
 }

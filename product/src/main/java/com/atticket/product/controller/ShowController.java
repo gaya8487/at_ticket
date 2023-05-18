@@ -116,7 +116,7 @@ public class ShowController {
 					.seats(showInfo.getSeats()
 						.stream()
 						.map(seatInfo -> RegisterShowServiceDto.SeatInfo.builder()
-							.id(seatInfo.getId())
+							.ids(seatInfo.getIds())
 							.grade(seatInfo.getGrade())
 							.build())
 						.collect(Collectors.toList()))

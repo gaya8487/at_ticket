@@ -72,7 +72,7 @@ public class ShowService {
 
 		try {
 			paredDate = LocalDate.parse(registerShowDto.getDate(), DateTimeFormatter.BASIC_ISO_DATE);
-			paredtime = LocalTime.parse(registerShowDto.getTime(), DateTimeFormatter.BASIC_ISO_DATE);
+			paredtime = LocalTime.parse(registerShowDto.getTime(), DateTimeFormatter.ISO_LOCAL_TIME);
 		} catch (Exception e) {
 			throw new BaseException(BaseStatus.UNEXPECTED_ERROR);
 		}
@@ -81,6 +81,7 @@ public class ShowService {
 			.productId(productId)
 			.date(paredDate)
 			.time(paredtime)
+			.hallId(Long.valueOf(registerShowDto.getHallId()))
 			.session(Integer.parseInt(registerShowDto.getSession()))
 			.hallId(Long.parseLong(registerShowDto.getHallId()))
 			.build();
@@ -88,19 +89,18 @@ public class ShowService {
 		//공연 저장
 		registedShowId = showRepository.save(show, productId);
 
+		//등록된 공연의 좌석-등급 매핑 저장
 		if (Objects.isNull(registedShowId)) {
 			throw new BaseException(BaseStatus.UNEXPECTED_ERROR);
 		} else {
-			//등록된 공연의 좌석-등급 매핑 저장
 
-			registerShowDto.getSeats().stream().filter(seatInfo -> seatInfo.equals(grade)).collect(Collectors.toList());
+			List<RegisterShowServiceDto.SeatInfo> seats = registerShowDto.getSeats();
+			for (int i = 0; i < seats.size(); i++) {
+				RegisterShowServiceDto.SeatInfo seat = seats.get(i);
+				showSeatService.registerShowSeat(productId, registedShowId, Long.valueOf(seat.getGrade()),
+					seat.getIds().stream().map(Long::parseLong).collect(Collectors.toList()));
+			}
 
-			showSeatService.registerShowSeat(productId, registedShowId, Long.valueOf(seatInfo.getGrade()), seatList);
-
-			// List<Long> registedShowIds = registerShowDto.getSeats().stream()
-			// 	.map(seatInfo -> showSeatService.registerShowSeat(productId,
-			// 		finalRegistedShowId, Long.valueOf(seatInfo.getGrade()), seatList)
-			// 	).collect(Collectors.toList());
 		}
 
 		return registedShowId;

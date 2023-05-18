@@ -72,16 +72,16 @@ public class ShowSeatService {
 	 * @param productId
 	 * @param showId
 	 * @param gradeId
-	 * @param seatList
+	 * @param seats
 	 * @return
 	 */
-	public Long registerShowSeat(Long productId, Long showId, Long gradeId, String seatList) {
+	public Long registerShowSeat(Long productId, Long showId, Long gradeId, List<Long> seats) {
 
 		ShowSeat showSeat = ShowSeat.builder()
 			.showId(showId)
 			.gradeId(gradeId)
 			.productId(productId)
-			.seatList(seatList)
+			.seatList(convertListToString(seats))
 			.build();
 
 		return showSeatRepository.save(showSeat);
